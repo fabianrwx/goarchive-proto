@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option go_package = "github.com/fabianrwx/myshopstatistics-proto/golang/templates";
+
+import "google/protobuf/empty.proto";
+
+message PingResponse {
+    string message = 1;
+}
+
+// Templates service definition
+service TemplatesService {
+    rpc Ping(google.protobuf.Empty) returns (PingResponse);
+    // Other RPC methods as needed
+}
+

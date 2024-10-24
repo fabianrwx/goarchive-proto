@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option go_package = "github.com/fabianrwx/myshopstatistics-proto/golang/application";
+
+import "google/protobuf/empty.proto";
+
+message PingResponse {
+    string message = 1;
+}
+
+// Application service definition
+service ApplicationService {
+    rpc Ping(google.protobuf.Empty) returns (PingResponse);
+    // Other RPC methods as needed
+}
+
