@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+option go_package = "github.com/fabianrwx/goarchive-proto/golang/audit";
+
+import "google/protobuf/empty.proto";
+
+
+// Audit service definition
+service AuditService {
+  rpc Ping(google.protobuf.Empty) returns (PingResponse);
+  rpc CreateAuditLog(AuditLog) returns (AuditLog);
+  rpc GetAuditLog(GetAuditLogRequest) returns (AuditLog);
+  rpc ListAuditLogs(ListAuditLogsRequest) returns (ListAuditLogsResponse);
+  // Other RPC methods as needed
+}
+
+message PingResponse {
+    string message = 1;
+}
+
+message AuditLog {
+  string id = 1;            // Unique identifier for the log
+  string timestamp = 2;     // Timestamp of the action
+  string user_id = 3;       // User responsible for the action
+  string service_name = 4;  // Which service produced the log
+  string application_name = 5;  // Which application produced the log
+  oneof action {
+    CreateAction create_action = 6;
+    UpdateAction update_action = 7;
+    DeleteAction delete_action = 8;
+  }
+}
+
+message CreateAction {
+  string object_type = 1;   // Type of object being created
+  string object_id = 2;     // ID of the object being created
+  string object_data = 3;   // Serialized data of the object
+}
+
+message UpdateAction {
+  string object_type = 1;   // Type of object being updated
+  string object_id = 2;     // ID of the object being updated
+  string old_data = 3;      // Data before the update
+  string new_data = 4;      // Data after the update
+}
+
+message DeleteAction {
+  string object_type = 1;   // Type of object being deleted
+  string object_id = 2;     // ID of the object being deleted
+}
+
+
+message GetAuditLogRequest {
+    string id = 1;
+  }
+  
+  message ListAuditLogsRequest {
+    int32 page_size = 1;
+    string page_token = 2;
+  }
+  
+  message ListAuditLogsResponse {
+    repeated AuditLog audit_logs = 1;
+    string next_page_token = 2;
+  }
+

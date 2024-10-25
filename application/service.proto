@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/fabianrwx/myshopstatistics-proto/golang/application";
+option go_package = "github.com/fabianrwx/goarchive-proto/golang/application";
 
 import "google/protobuf/empty.proto";
 

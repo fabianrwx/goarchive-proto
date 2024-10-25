@@ -12,6 +12,7 @@ jobs:
         service:
         - templates
         - application
+        - audit
     steps:
     - name: Install Go
       uses: actions/setup-go@v2
