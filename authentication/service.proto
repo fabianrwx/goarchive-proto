@@ -57,11 +57,12 @@ message LoginRequest {
 
 // Login Response
 message LoginResponse {
-  string access_token = 1;
-  string refresh_token = 2;
-  string token_expiry = 3;
-  string refresh_expiry = 4;
-  repeated string roles = 5;
+  string username = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+  string token_expiry = 4;
+  string refresh_expiry = 5;
+  repeated string roles = 6;
 }
 
 // Logout Request
