@@ -94,6 +94,8 @@ message RefreshTokenRequest {
 message RefreshTokenResponse {
     string access_token = 1;
     string refresh_token = 2;
+    string token_expiry = 3;
+    string refresh_expiry = 4;
 }
 
 // Messages for Role and Group with basic fields
