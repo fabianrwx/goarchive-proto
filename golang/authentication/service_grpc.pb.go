@@ -21,7 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	AuthenticationService_Ping_FullMethodName            = "/AuthenticationService/Ping"
-	AuthenticationService_ValidateToken_FullMethodName   = "/AuthenticationService/ValidateToken"
+	AuthenticationService_GetClaims_FullMethodName       = "/AuthenticationService/GetClaims"
 	AuthenticationService_Login_FullMethodName           = "/AuthenticationService/Login"
 	AuthenticationService_Logout_FullMethodName          = "/AuthenticationService/Logout"
 	AuthenticationService_RefreshToken_FullMethodName    = "/AuthenticationService/RefreshToken"
@@ -37,7 +37,7 @@ const (
 type AuthenticationServiceClient interface {
 	Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingResponse, error)
 	// Validate token
-	ValidateToken(ctx context.Context, in *ValidateTokenRequest, opts ...grpc.CallOption) (*ValidateTokenResponse, error)
+	GetClaims(ctx context.Context, in *GetClaimsRequest, opts ...grpc.CallOption) (*GetClaimsResponse, error)
 	// Login with credentials
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	// Logout
@@ -71,9 +71,9 @@ func (c *authenticationServiceClient) Ping(ctx context.Context, in *emptypb.Empt
 	return out, nil
 }
 
-func (c *authenticationServiceClient) ValidateToken(ctx context.Context, in *ValidateTokenRequest, opts ...grpc.CallOption) (*ValidateTokenResponse, error) {
-	out := new(ValidateTokenResponse)
-	err := c.cc.Invoke(ctx, AuthenticationService_ValidateToken_FullMethodName, in, out, opts...)
+func (c *authenticationServiceClient) GetClaims(ctx context.Context, in *GetClaimsRequest, opts ...grpc.CallOption) (*GetClaimsResponse, error) {
+	out := new(GetClaimsResponse)
+	err := c.cc.Invoke(ctx, AuthenticationService_GetClaims_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -149,7 +149,7 @@ func (c *authenticationServiceClient) ListGroups(ctx context.Context, in *emptyp
 type AuthenticationServiceServer interface {
 	Ping(context.Context, *emptypb.Empty) (*PingResponse, error)
 	// Validate token
-	ValidateToken(context.Context, *ValidateTokenRequest) (*ValidateTokenResponse, error)
+	GetClaims(context.Context, *GetClaimsRequest) (*GetClaimsResponse, error)
 	// Login with credentials
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	// Logout
@@ -174,8 +174,8 @@ type UnimplementedAuthenticationServiceServer struct {
 func (UnimplementedAuthenticationServiceServer) Ping(context.Context, *emptypb.Empty) (*PingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
-func (UnimplementedAuthenticationServiceServer) ValidateToken(context.Context, *ValidateTokenRequest) (*ValidateTokenResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ValidateToken not implemented")
+func (UnimplementedAuthenticationServiceServer) GetClaims(context.Context, *GetClaimsRequest) (*GetClaimsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetClaims not implemented")
 }
 func (UnimplementedAuthenticationServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
@@ -229,20 +229,20 @@ func _AuthenticationService_Ping_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthenticationService_ValidateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ValidateTokenRequest)
+func _AuthenticationService_GetClaims_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetClaimsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthenticationServiceServer).ValidateToken(ctx, in)
+		return srv.(AuthenticationServiceServer).GetClaims(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthenticationService_ValidateToken_FullMethodName,
+		FullMethod: AuthenticationService_GetClaims_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).ValidateToken(ctx, req.(*ValidateTokenRequest))
+		return srv.(AuthenticationServiceServer).GetClaims(ctx, req.(*GetClaimsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -385,8 +385,8 @@ var AuthenticationService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AuthenticationService_Ping_Handler,
 		},
 		{
-			MethodName: "ValidateToken",
-			Handler:    _AuthenticationService_ValidateToken_Handler,
+			MethodName: "GetClaims",
+			Handler:    _AuthenticationService_GetClaims_Handler,
 		},
 		{
 			MethodName: "Login",

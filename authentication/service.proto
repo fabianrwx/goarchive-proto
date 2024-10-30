@@ -12,7 +12,7 @@ message PingResponse {
 service AuthenticationService {
     rpc Ping(google.protobuf.Empty) returns (PingResponse);
     // Validate token
-    rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse) {}
+    rpc GetClaims(GetClaimsRequest) returns (GetClaimsResponse) {}
 
     // Login with credentials
     rpc Login(LoginRequest) returns (LoginResponse) {}
@@ -35,18 +35,6 @@ service AuthenticationService {
     // List all Group-Role mappings
     rpc ListGroups (google.protobuf.Empty) returns (ListGroupsResponse);
 
-}
-
-// Validate Token Request
-message ValidateTokenRequest {
-  string token = 1;
-  bool isRefreshToken = 2;
-}
-
-// Validate Token Response
-message ValidateTokenResponse {
-  bool valid = 1;
-  string error = 2;
 }
 
 // Login Request
@@ -147,3 +135,16 @@ message GroupWithRoleResponse {
 message ListGroupsResponse {
   repeated GroupWithRoleResponse groups = 1;
 }
+
+// Request to retrieve claims from token
+message GetClaimsRequest {
+  string token = 1;
+}
+
+// Response containing user claims
+message GetClaimsResponse {
+  string user_guid = 1;
+  string username = 2;
+  repeated string roles = 3;
+}
+
