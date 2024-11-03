@@ -11,6 +11,18 @@ message PingResponse {
 // Application service definition
 service ApplicationService {
     rpc Ping(google.protobuf.Empty) returns (PingResponse);
-    // Other RPC methods as needed
+    rpc GetPreferences(Preferences) returns (Preferences);
+    rpc SetPreferences(Preferences) returns (Preferences);
 }
 
+
+// Define an enum for view types
+enum ViewType {
+    LIST = 0;
+    GRID = 1;
+}
+
+message Preferences {
+    string username = 1;
+    ViewType view = 2; // Use the enum as a field type
+}
