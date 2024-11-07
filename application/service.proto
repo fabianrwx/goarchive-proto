@@ -11,10 +11,9 @@ message PingResponse {
 // Application service definition
 service ApplicationService {
     rpc Ping(google.protobuf.Empty) returns (PingResponse);
-    rpc GetPreferences(Preferences) returns (Preferences);
-    rpc SetPreferences(Preferences) returns (Preferences);
+    rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
+    rpc SetPreferences(SetPreferencesRequest) returns (SetPreferencesResponse);
 }
-
 
 // Define an enum for view types
 enum ViewType {
@@ -22,7 +21,25 @@ enum ViewType {
     GRID = 1;
 }
 
+// Preferences message
 message Preferences {
     string username = 1;
     ViewType view = 2; // Use the enum as a field type
+}
+
+message GetPreferencesRequest {
+    string username = 1;
+}
+
+message GetPreferencesResponse {
+    Preferences preferences = 1;
+}
+
+message SetPreferencesRequest {
+    string username = 1;
+    ViewType view = 2; // Use the enum as a field type
+}
+
+message SetPreferencesResponse {
+    Preferences preferences = 1;
 }

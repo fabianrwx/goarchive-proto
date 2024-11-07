@@ -23,18 +23,6 @@ service AuthenticationService {
     // Refresh token
     rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
 
-    // Create a new Group and map it to a Role
-    rpc CreateGroup (CreateGroupRequest) returns (GroupWithRoleResponse);
-  
-    // Get Group details by ID
-    rpc GetGroup (GetGroupRequest) returns (GroupWithRoleResponse);
-  
-    // Update an existing Group's role
-    rpc UpdateGroupRole (UpdateGroupRoleRequest) returns (GroupWithRoleResponse);
-  
-    // List all Group-Role mappings
-    rpc ListGroups (google.protobuf.Empty) returns (ListGroupsResponse);
-
 }
 
 // Login Request
@@ -98,46 +86,6 @@ message RefreshTokenResponse {
     string refresh_expiry = 4;
 }
 
-// Messages for Role and Group with basic fields
-message Role {
-  uint32 id = 1;
-  string name = 2;
-}
-
-message Group {
-  string id = 1; // UUID format
-  string name = 2;
-  uint32 role_id = 3; // Foreign key to Role ID
-}
-
-// Request to create a new Group-Role mapping
-message CreateGroupRequest {
-  string group_name = 1;
-  uint32 role_id = 2;
-}
-
-// Request to update an existing Group's role
-message UpdateGroupRoleRequest {
-  string group_id = 1; // UUID of the Group
-  uint32 new_role_id = 2;
-}
-
-// Request to get a Group by its ID
-message GetGroupRequest {
-  string group_id = 1;
-}
-
-// Response with Group and Role information
-message GroupWithRoleResponse {
-  Group group = 1;
-  Role role = 2;
-}
-
-// List response with multiple Group-Role mappings
-message ListGroupsResponse {
-  repeated GroupWithRoleResponse groups = 1;
-}
-
 // Request to retrieve claims from token
 message GetClaimsRequest {
   string token = 1;
@@ -149,4 +97,3 @@ message GetClaimsResponse {
   string username = 2;
   repeated string roles = 3;
 }
-

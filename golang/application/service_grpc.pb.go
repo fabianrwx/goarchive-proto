@@ -30,8 +30,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ApplicationServiceClient interface {
 	Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingResponse, error)
-	GetPreferences(ctx context.Context, in *Preferences, opts ...grpc.CallOption) (*Preferences, error)
-	SetPreferences(ctx context.Context, in *Preferences, opts ...grpc.CallOption) (*Preferences, error)
+	GetPreferences(ctx context.Context, in *GetPreferencesRequest, opts ...grpc.CallOption) (*GetPreferencesResponse, error)
+	SetPreferences(ctx context.Context, in *SetPreferencesRequest, opts ...grpc.CallOption) (*SetPreferencesResponse, error)
 }
 
 type applicationServiceClient struct {
@@ -51,8 +51,8 @@ func (c *applicationServiceClient) Ping(ctx context.Context, in *emptypb.Empty, 
 	return out, nil
 }
 
-func (c *applicationServiceClient) GetPreferences(ctx context.Context, in *Preferences, opts ...grpc.CallOption) (*Preferences, error) {
-	out := new(Preferences)
+func (c *applicationServiceClient) GetPreferences(ctx context.Context, in *GetPreferencesRequest, opts ...grpc.CallOption) (*GetPreferencesResponse, error) {
+	out := new(GetPreferencesResponse)
 	err := c.cc.Invoke(ctx, ApplicationService_GetPreferences_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -60,8 +60,8 @@ func (c *applicationServiceClient) GetPreferences(ctx context.Context, in *Prefe
 	return out, nil
 }
 
-func (c *applicationServiceClient) SetPreferences(ctx context.Context, in *Preferences, opts ...grpc.CallOption) (*Preferences, error) {
-	out := new(Preferences)
+func (c *applicationServiceClient) SetPreferences(ctx context.Context, in *SetPreferencesRequest, opts ...grpc.CallOption) (*SetPreferencesResponse, error) {
+	out := new(SetPreferencesResponse)
 	err := c.cc.Invoke(ctx, ApplicationService_SetPreferences_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -74,8 +74,8 @@ func (c *applicationServiceClient) SetPreferences(ctx context.Context, in *Prefe
 // for forward compatibility
 type ApplicationServiceServer interface {
 	Ping(context.Context, *emptypb.Empty) (*PingResponse, error)
-	GetPreferences(context.Context, *Preferences) (*Preferences, error)
-	SetPreferences(context.Context, *Preferences) (*Preferences, error)
+	GetPreferences(context.Context, *GetPreferencesRequest) (*GetPreferencesResponse, error)
+	SetPreferences(context.Context, *SetPreferencesRequest) (*SetPreferencesResponse, error)
 	mustEmbedUnimplementedApplicationServiceServer()
 }
 
@@ -86,10 +86,10 @@ type UnimplementedApplicationServiceServer struct {
 func (UnimplementedApplicationServiceServer) Ping(context.Context, *emptypb.Empty) (*PingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
-func (UnimplementedApplicationServiceServer) GetPreferences(context.Context, *Preferences) (*Preferences, error) {
+func (UnimplementedApplicationServiceServer) GetPreferences(context.Context, *GetPreferencesRequest) (*GetPreferencesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPreferences not implemented")
 }
-func (UnimplementedApplicationServiceServer) SetPreferences(context.Context, *Preferences) (*Preferences, error) {
+func (UnimplementedApplicationServiceServer) SetPreferences(context.Context, *SetPreferencesRequest) (*SetPreferencesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetPreferences not implemented")
 }
 func (UnimplementedApplicationServiceServer) mustEmbedUnimplementedApplicationServiceServer() {}
@@ -124,7 +124,7 @@ func _ApplicationService_Ping_Handler(srv interface{}, ctx context.Context, dec 
 }
 
 func _ApplicationService_GetPreferences_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Preferences)
+	in := new(GetPreferencesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -136,13 +136,13 @@ func _ApplicationService_GetPreferences_Handler(srv interface{}, ctx context.Con
 		FullMethod: ApplicationService_GetPreferences_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApplicationServiceServer).GetPreferences(ctx, req.(*Preferences))
+		return srv.(ApplicationServiceServer).GetPreferences(ctx, req.(*GetPreferencesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ApplicationService_SetPreferences_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Preferences)
+	in := new(SetPreferencesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -154,7 +154,7 @@ func _ApplicationService_SetPreferences_Handler(srv interface{}, ctx context.Con
 		FullMethod: ApplicationService_SetPreferences_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApplicationServiceServer).SetPreferences(ctx, req.(*Preferences))
+		return srv.(ApplicationServiceServer).SetPreferences(ctx, req.(*SetPreferencesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

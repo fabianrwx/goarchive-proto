@@ -20,15 +20,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AuthenticationService_Ping_FullMethodName            = "/AuthenticationService/Ping"
-	AuthenticationService_GetClaims_FullMethodName       = "/AuthenticationService/GetClaims"
-	AuthenticationService_Login_FullMethodName           = "/AuthenticationService/Login"
-	AuthenticationService_Logout_FullMethodName          = "/AuthenticationService/Logout"
-	AuthenticationService_RefreshToken_FullMethodName    = "/AuthenticationService/RefreshToken"
-	AuthenticationService_CreateGroup_FullMethodName     = "/AuthenticationService/CreateGroup"
-	AuthenticationService_GetGroup_FullMethodName        = "/AuthenticationService/GetGroup"
-	AuthenticationService_UpdateGroupRole_FullMethodName = "/AuthenticationService/UpdateGroupRole"
-	AuthenticationService_ListGroups_FullMethodName      = "/AuthenticationService/ListGroups"
+	AuthenticationService_Ping_FullMethodName         = "/AuthenticationService/Ping"
+	AuthenticationService_GetClaims_FullMethodName    = "/AuthenticationService/GetClaims"
+	AuthenticationService_Login_FullMethodName        = "/AuthenticationService/Login"
+	AuthenticationService_Logout_FullMethodName       = "/AuthenticationService/Logout"
+	AuthenticationService_RefreshToken_FullMethodName = "/AuthenticationService/RefreshToken"
 )
 
 // AuthenticationServiceClient is the client API for AuthenticationService service.
@@ -44,14 +40,6 @@ type AuthenticationServiceClient interface {
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
 	// Refresh token
 	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
-	// Create a new Group and map it to a Role
-	CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*GroupWithRoleResponse, error)
-	// Get Group details by ID
-	GetGroup(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GroupWithRoleResponse, error)
-	// Update an existing Group's role
-	UpdateGroupRole(ctx context.Context, in *UpdateGroupRoleRequest, opts ...grpc.CallOption) (*GroupWithRoleResponse, error)
-	// List all Group-Role mappings
-	ListGroups(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListGroupsResponse, error)
 }
 
 type authenticationServiceClient struct {
@@ -107,42 +95,6 @@ func (c *authenticationServiceClient) RefreshToken(ctx context.Context, in *Refr
 	return out, nil
 }
 
-func (c *authenticationServiceClient) CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*GroupWithRoleResponse, error) {
-	out := new(GroupWithRoleResponse)
-	err := c.cc.Invoke(ctx, AuthenticationService_CreateGroup_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authenticationServiceClient) GetGroup(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GroupWithRoleResponse, error) {
-	out := new(GroupWithRoleResponse)
-	err := c.cc.Invoke(ctx, AuthenticationService_GetGroup_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authenticationServiceClient) UpdateGroupRole(ctx context.Context, in *UpdateGroupRoleRequest, opts ...grpc.CallOption) (*GroupWithRoleResponse, error) {
-	out := new(GroupWithRoleResponse)
-	err := c.cc.Invoke(ctx, AuthenticationService_UpdateGroupRole_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authenticationServiceClient) ListGroups(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListGroupsResponse, error) {
-	out := new(ListGroupsResponse)
-	err := c.cc.Invoke(ctx, AuthenticationService_ListGroups_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // AuthenticationServiceServer is the server API for AuthenticationService service.
 // All implementations must embed UnimplementedAuthenticationServiceServer
 // for forward compatibility
@@ -156,14 +108,6 @@ type AuthenticationServiceServer interface {
 	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
 	// Refresh token
 	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
-	// Create a new Group and map it to a Role
-	CreateGroup(context.Context, *CreateGroupRequest) (*GroupWithRoleResponse, error)
-	// Get Group details by ID
-	GetGroup(context.Context, *GetGroupRequest) (*GroupWithRoleResponse, error)
-	// Update an existing Group's role
-	UpdateGroupRole(context.Context, *UpdateGroupRoleRequest) (*GroupWithRoleResponse, error)
-	// List all Group-Role mappings
-	ListGroups(context.Context, *emptypb.Empty) (*ListGroupsResponse, error)
 	mustEmbedUnimplementedAuthenticationServiceServer()
 }
 
@@ -185,18 +129,6 @@ func (UnimplementedAuthenticationServiceServer) Logout(context.Context, *LogoutR
 }
 func (UnimplementedAuthenticationServiceServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
-}
-func (UnimplementedAuthenticationServiceServer) CreateGroup(context.Context, *CreateGroupRequest) (*GroupWithRoleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateGroup not implemented")
-}
-func (UnimplementedAuthenticationServiceServer) GetGroup(context.Context, *GetGroupRequest) (*GroupWithRoleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetGroup not implemented")
-}
-func (UnimplementedAuthenticationServiceServer) UpdateGroupRole(context.Context, *UpdateGroupRoleRequest) (*GroupWithRoleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateGroupRole not implemented")
-}
-func (UnimplementedAuthenticationServiceServer) ListGroups(context.Context, *emptypb.Empty) (*ListGroupsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListGroups not implemented")
 }
 func (UnimplementedAuthenticationServiceServer) mustEmbedUnimplementedAuthenticationServiceServer() {}
 
@@ -301,78 +233,6 @@ func _AuthenticationService_RefreshToken_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthenticationService_CreateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateGroupRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthenticationServiceServer).CreateGroup(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthenticationService_CreateGroup_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).CreateGroup(ctx, req.(*CreateGroupRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AuthenticationService_GetGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetGroupRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthenticationServiceServer).GetGroup(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthenticationService_GetGroup_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).GetGroup(ctx, req.(*GetGroupRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AuthenticationService_UpdateGroupRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateGroupRoleRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthenticationServiceServer).UpdateGroupRole(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthenticationService_UpdateGroupRole_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).UpdateGroupRole(ctx, req.(*UpdateGroupRoleRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AuthenticationService_ListGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthenticationServiceServer).ListGroups(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AuthenticationService_ListGroups_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).ListGroups(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // AuthenticationService_ServiceDesc is the grpc.ServiceDesc for AuthenticationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -399,22 +259,6 @@ var AuthenticationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RefreshToken",
 			Handler:    _AuthenticationService_RefreshToken_Handler,
-		},
-		{
-			MethodName: "CreateGroup",
-			Handler:    _AuthenticationService_CreateGroup_Handler,
-		},
-		{
-			MethodName: "GetGroup",
-			Handler:    _AuthenticationService_GetGroup_Handler,
-		},
-		{
-			MethodName: "UpdateGroupRole",
-			Handler:    _AuthenticationService_UpdateGroupRole_Handler,
-		},
-		{
-			MethodName: "ListGroups",
-			Handler:    _AuthenticationService_ListGroups_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
