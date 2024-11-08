@@ -20,7 +20,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ApplicationService_Ping_FullMethodName           = "/ApplicationService/Ping"
+	ApplicationService_PingAppService_FullMethodName = "/ApplicationService/PingAppService"
 	ApplicationService_GetPreferences_FullMethodName = "/ApplicationService/GetPreferences"
 	ApplicationService_SetPreferences_FullMethodName = "/ApplicationService/SetPreferences"
 )
@@ -29,7 +29,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ApplicationServiceClient interface {
-	Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingResponse, error)
+	PingAppService(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingAppResponse, error)
 	GetPreferences(ctx context.Context, in *GetPreferencesRequest, opts ...grpc.CallOption) (*GetPreferencesResponse, error)
 	SetPreferences(ctx context.Context, in *SetPreferencesRequest, opts ...grpc.CallOption) (*SetPreferencesResponse, error)
 }
@@ -42,9 +42,9 @@ func NewApplicationServiceClient(cc grpc.ClientConnInterface) ApplicationService
 	return &applicationServiceClient{cc}
 }
 
-func (c *applicationServiceClient) Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingResponse, error) {
-	out := new(PingResponse)
-	err := c.cc.Invoke(ctx, ApplicationService_Ping_FullMethodName, in, out, opts...)
+func (c *applicationServiceClient) PingAppService(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingAppResponse, error) {
+	out := new(PingAppResponse)
+	err := c.cc.Invoke(ctx, ApplicationService_PingAppService_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func (c *applicationServiceClient) SetPreferences(ctx context.Context, in *SetPr
 // All implementations must embed UnimplementedApplicationServiceServer
 // for forward compatibility
 type ApplicationServiceServer interface {
-	Ping(context.Context, *emptypb.Empty) (*PingResponse, error)
+	PingAppService(context.Context, *emptypb.Empty) (*PingAppResponse, error)
 	GetPreferences(context.Context, *GetPreferencesRequest) (*GetPreferencesResponse, error)
 	SetPreferences(context.Context, *SetPreferencesRequest) (*SetPreferencesResponse, error)
 	mustEmbedUnimplementedApplicationServiceServer()
@@ -83,8 +83,8 @@ type ApplicationServiceServer interface {
 type UnimplementedApplicationServiceServer struct {
 }
 
-func (UnimplementedApplicationServiceServer) Ping(context.Context, *emptypb.Empty) (*PingResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+func (UnimplementedApplicationServiceServer) PingAppService(context.Context, *emptypb.Empty) (*PingAppResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PingAppService not implemented")
 }
 func (UnimplementedApplicationServiceServer) GetPreferences(context.Context, *GetPreferencesRequest) (*GetPreferencesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPreferences not implemented")
@@ -105,20 +105,20 @@ func RegisterApplicationServiceServer(s grpc.ServiceRegistrar, srv ApplicationSe
 	s.RegisterService(&ApplicationService_ServiceDesc, srv)
 }
 
-func _ApplicationService_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ApplicationService_PingAppService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ApplicationServiceServer).Ping(ctx, in)
+		return srv.(ApplicationServiceServer).PingAppService(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ApplicationService_Ping_FullMethodName,
+		FullMethod: ApplicationService_PingAppService_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApplicationServiceServer).Ping(ctx, req.(*emptypb.Empty))
+		return srv.(ApplicationServiceServer).PingAppService(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -167,8 +167,8 @@ var ApplicationService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ApplicationServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Ping",
-			Handler:    _ApplicationService_Ping_Handler,
+			MethodName: "PingAppService",
+			Handler:    _ApplicationService_PingAppService_Handler,
 		},
 		{
 			MethodName: "GetPreferences",

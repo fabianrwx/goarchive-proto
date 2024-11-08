@@ -4,13 +4,13 @@ option go_package = "github.com/fabianrwx/goarchive-proto/golang/application";
 
 import "google/protobuf/empty.proto";
 
-message PingResponse {
+message PingAppResponse {
     string message = 1;
 }
 
 // Application service definition
 service ApplicationService {
-    rpc Ping(google.protobuf.Empty) returns (PingResponse);
+    rpc PingAppService(google.protobuf.Empty) returns (PingAppResponse);
     rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
     rpc SetPreferences(SetPreferencesRequest) returns (SetPreferencesResponse);
 }
