@@ -23,7 +23,8 @@ service AuthenticationService {
     // Refresh token
     rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
 
-
+    // List groups
+    rpc ListGroups(google.protobuf.Empty) returns (ListGroupsResponse) {}
 
 }
 
