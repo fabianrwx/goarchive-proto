@@ -20,18 +20,18 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AuthenticationService_Ping_FullMethodName         = "/AuthenticationService/Ping"
-	AuthenticationService_GetClaims_FullMethodName    = "/AuthenticationService/GetClaims"
-	AuthenticationService_Login_FullMethodName        = "/AuthenticationService/Login"
-	AuthenticationService_Logout_FullMethodName       = "/AuthenticationService/Logout"
-	AuthenticationService_RefreshToken_FullMethodName = "/AuthenticationService/RefreshToken"
+	AuthenticationService_PingAuthentication_FullMethodName = "/AuthenticationService/PingAuthentication"
+	AuthenticationService_GetClaims_FullMethodName          = "/AuthenticationService/GetClaims"
+	AuthenticationService_Login_FullMethodName              = "/AuthenticationService/Login"
+	AuthenticationService_Logout_FullMethodName             = "/AuthenticationService/Logout"
+	AuthenticationService_RefreshToken_FullMethodName       = "/AuthenticationService/RefreshToken"
 )
 
 // AuthenticationServiceClient is the client API for AuthenticationService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthenticationServiceClient interface {
-	Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingResponse, error)
+	PingAuthentication(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingAuthResponse, error)
 	// Validate token
 	GetClaims(ctx context.Context, in *GetClaimsRequest, opts ...grpc.CallOption) (*GetClaimsResponse, error)
 	// Login with credentials
@@ -50,9 +50,9 @@ func NewAuthenticationServiceClient(cc grpc.ClientConnInterface) AuthenticationS
 	return &authenticationServiceClient{cc}
 }
 
-func (c *authenticationServiceClient) Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingResponse, error) {
-	out := new(PingResponse)
-	err := c.cc.Invoke(ctx, AuthenticationService_Ping_FullMethodName, in, out, opts...)
+func (c *authenticationServiceClient) PingAuthentication(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingAuthResponse, error) {
+	out := new(PingAuthResponse)
+	err := c.cc.Invoke(ctx, AuthenticationService_PingAuthentication_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (c *authenticationServiceClient) RefreshToken(ctx context.Context, in *Refr
 // All implementations must embed UnimplementedAuthenticationServiceServer
 // for forward compatibility
 type AuthenticationServiceServer interface {
-	Ping(context.Context, *emptypb.Empty) (*PingResponse, error)
+	PingAuthentication(context.Context, *emptypb.Empty) (*PingAuthResponse, error)
 	// Validate token
 	GetClaims(context.Context, *GetClaimsRequest) (*GetClaimsResponse, error)
 	// Login with credentials
@@ -115,8 +115,8 @@ type AuthenticationServiceServer interface {
 type UnimplementedAuthenticationServiceServer struct {
 }
 
-func (UnimplementedAuthenticationServiceServer) Ping(context.Context, *emptypb.Empty) (*PingResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+func (UnimplementedAuthenticationServiceServer) PingAuthentication(context.Context, *emptypb.Empty) (*PingAuthResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PingAuthentication not implemented")
 }
 func (UnimplementedAuthenticationServiceServer) GetClaims(context.Context, *GetClaimsRequest) (*GetClaimsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClaims not implemented")
@@ -143,20 +143,20 @@ func RegisterAuthenticationServiceServer(s grpc.ServiceRegistrar, srv Authentica
 	s.RegisterService(&AuthenticationService_ServiceDesc, srv)
 }
 
-func _AuthenticationService_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthenticationService_PingAuthentication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthenticationServiceServer).Ping(ctx, in)
+		return srv.(AuthenticationServiceServer).PingAuthentication(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthenticationService_Ping_FullMethodName,
+		FullMethod: AuthenticationService_PingAuthentication_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthenticationServiceServer).Ping(ctx, req.(*emptypb.Empty))
+		return srv.(AuthenticationServiceServer).PingAuthentication(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -241,8 +241,8 @@ var AuthenticationService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AuthenticationServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Ping",
-			Handler:    _AuthenticationService_Ping_Handler,
+			MethodName: "PingAuthentication",
+			Handler:    _AuthenticationService_PingAuthentication_Handler,
 		},
 		{
 			MethodName: "GetClaims",

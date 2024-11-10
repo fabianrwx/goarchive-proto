@@ -4,13 +4,13 @@ option go_package = "github.com/fabianrwx/goarchive-proto/golang/authentication"
 
 import "google/protobuf/empty.proto";
 
-message PingResponse {
+message PingAuthResponse {
     string message = 1;
 }
 
 // Authentication service definition
 service AuthenticationService {
-    rpc Ping(google.protobuf.Empty) returns (PingResponse);
+    rpc PingAuthentication(google.protobuf.Empty) returns (PingAuthResponse);
     // Validate token
     rpc GetClaims(GetClaimsRequest) returns (GetClaimsResponse) {}
 
@@ -22,6 +22,8 @@ service AuthenticationService {
 
     // Refresh token
     rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
+
+
 
 }
 
@@ -96,4 +98,21 @@ message GetClaimsResponse {
   string user_guid = 1;
   string username = 2;
   repeated string roles = 3;
+}
+
+message Group {
+  string id = 1;
+  string name = 2;
+  bool administrator = 3;
+  bool audit = 4;
+  bool developer = 5;
+  bool it_administrator = 6;
+  bool end_user = 7;
+  bool retention = 8;
+  bool is_inmemory = 9;
+  bool is_active = 10;
+}
+
+message ListGroupsResponse {
+  repeated Group groups = 1;
 }
