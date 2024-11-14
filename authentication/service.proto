@@ -26,6 +26,9 @@ service AuthenticationService {
     // List groups
     rpc ListGroups(google.protobuf.Empty) returns (ListGroupsResponse) {}
 
+    // Update group
+    rpc UpdateGroup(UpdateGroupRequest) returns (UpdateGroupResponse) {}
+
 }
 
 // Login Request
@@ -116,4 +119,15 @@ message Group {
 
 message ListGroupsResponse {
   repeated Group groups = 1;
+}
+
+
+message UpdateGroupRequest {
+  string name = 1;
+  string role = 2;
+  bool value = 3;
+}
+
+message UpdateGroupResponse {
+  bool success = 1;
 }

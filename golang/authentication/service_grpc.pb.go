@@ -26,6 +26,7 @@ const (
 	AuthenticationService_Logout_FullMethodName             = "/AuthenticationService/Logout"
 	AuthenticationService_RefreshToken_FullMethodName       = "/AuthenticationService/RefreshToken"
 	AuthenticationService_ListGroups_FullMethodName         = "/AuthenticationService/ListGroups"
+	AuthenticationService_UpdateGroup_FullMethodName        = "/AuthenticationService/UpdateGroup"
 )
 
 // AuthenticationServiceClient is the client API for AuthenticationService service.
@@ -43,6 +44,8 @@ type AuthenticationServiceClient interface {
 	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
 	// List groups
 	ListGroups(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListGroupsResponse, error)
+	// Update group
+	UpdateGroup(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*UpdateGroupResponse, error)
 }
 
 type authenticationServiceClient struct {
@@ -107,6 +110,15 @@ func (c *authenticationServiceClient) ListGroups(ctx context.Context, in *emptyp
 	return out, nil
 }
 
+func (c *authenticationServiceClient) UpdateGroup(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*UpdateGroupResponse, error) {
+	out := new(UpdateGroupResponse)
+	err := c.cc.Invoke(ctx, AuthenticationService_UpdateGroup_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthenticationServiceServer is the server API for AuthenticationService service.
 // All implementations must embed UnimplementedAuthenticationServiceServer
 // for forward compatibility
@@ -122,6 +134,8 @@ type AuthenticationServiceServer interface {
 	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
 	// List groups
 	ListGroups(context.Context, *emptypb.Empty) (*ListGroupsResponse, error)
+	// Update group
+	UpdateGroup(context.Context, *UpdateGroupRequest) (*UpdateGroupResponse, error)
 	mustEmbedUnimplementedAuthenticationServiceServer()
 }
 
@@ -146,6 +160,9 @@ func (UnimplementedAuthenticationServiceServer) RefreshToken(context.Context, *R
 }
 func (UnimplementedAuthenticationServiceServer) ListGroups(context.Context, *emptypb.Empty) (*ListGroupsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListGroups not implemented")
+}
+func (UnimplementedAuthenticationServiceServer) UpdateGroup(context.Context, *UpdateGroupRequest) (*UpdateGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateGroup not implemented")
 }
 func (UnimplementedAuthenticationServiceServer) mustEmbedUnimplementedAuthenticationServiceServer() {}
 
@@ -268,6 +285,24 @@ func _AuthenticationService_ListGroups_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthenticationService_UpdateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthenticationServiceServer).UpdateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthenticationService_UpdateGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthenticationServiceServer).UpdateGroup(ctx, req.(*UpdateGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthenticationService_ServiceDesc is the grpc.ServiceDesc for AuthenticationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -298,6 +333,10 @@ var AuthenticationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListGroups",
 			Handler:    _AuthenticationService_ListGroups_Handler,
+		},
+		{
+			MethodName: "UpdateGroup",
+			Handler:    _AuthenticationService_UpdateGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
