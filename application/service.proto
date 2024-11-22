@@ -3,6 +3,8 @@ syntax = "proto3";
 option go_package = "github.com/fabianrwx/goarchive-proto/golang/application";
 
 import "google/protobuf/empty.proto";
+// timestamp proto
+import "google/protobuf/timestamp.proto";
 
 message PingAppResponse {
     string message = 1;
@@ -13,6 +15,7 @@ service ApplicationService {
     rpc PingAppService(google.protobuf.Empty) returns (PingAppResponse);
     rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
     rpc SetPreferences(SetPreferencesRequest) returns (SetPreferencesResponse);
+    rpc ListNodes(ListNodesRequest) returns (ListNodesResponse);
 }
 
 // Define an enum for view types
@@ -43,3 +46,29 @@ message SetPreferencesRequest {
 message SetPreferencesResponse {
     Preferences preferences = 1;
 }
+
+
+message Node {
+    string id = 1;
+    string name = 2;
+    string host = 3;
+    int32 port = 4;
+    string username = 5;
+    string password = 6;
+    bool ssl = 7;
+    string ssl_cert = 8;
+    string ssl_key = 9;
+    string ssl_ca = 10;
+    google.protobuf.Timestamp created_at = 11;
+    google.protobuf.Timestamp updated_at = 12;
+    google.protobuf.Timestamp deleted_at = 13;
+  }
+
+message ListNodesRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+}
+
+message ListNodesResponse {
+    repeated Node nodes = 1;
+}  

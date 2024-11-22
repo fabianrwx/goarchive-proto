@@ -23,6 +23,7 @@ const (
 	ApplicationService_PingAppService_FullMethodName = "/ApplicationService/PingAppService"
 	ApplicationService_GetPreferences_FullMethodName = "/ApplicationService/GetPreferences"
 	ApplicationService_SetPreferences_FullMethodName = "/ApplicationService/SetPreferences"
+	ApplicationService_ListNodes_FullMethodName      = "/ApplicationService/ListNodes"
 )
 
 // ApplicationServiceClient is the client API for ApplicationService service.
@@ -32,6 +33,7 @@ type ApplicationServiceClient interface {
 	PingAppService(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingAppResponse, error)
 	GetPreferences(ctx context.Context, in *GetPreferencesRequest, opts ...grpc.CallOption) (*GetPreferencesResponse, error)
 	SetPreferences(ctx context.Context, in *SetPreferencesRequest, opts ...grpc.CallOption) (*SetPreferencesResponse, error)
+	ListNodes(ctx context.Context, in *ListNodesRequest, opts ...grpc.CallOption) (*ListNodesResponse, error)
 }
 
 type applicationServiceClient struct {
@@ -69,6 +71,15 @@ func (c *applicationServiceClient) SetPreferences(ctx context.Context, in *SetPr
 	return out, nil
 }
 
+func (c *applicationServiceClient) ListNodes(ctx context.Context, in *ListNodesRequest, opts ...grpc.CallOption) (*ListNodesResponse, error) {
+	out := new(ListNodesResponse)
+	err := c.cc.Invoke(ctx, ApplicationService_ListNodes_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ApplicationServiceServer is the server API for ApplicationService service.
 // All implementations must embed UnimplementedApplicationServiceServer
 // for forward compatibility
@@ -76,6 +87,7 @@ type ApplicationServiceServer interface {
 	PingAppService(context.Context, *emptypb.Empty) (*PingAppResponse, error)
 	GetPreferences(context.Context, *GetPreferencesRequest) (*GetPreferencesResponse, error)
 	SetPreferences(context.Context, *SetPreferencesRequest) (*SetPreferencesResponse, error)
+	ListNodes(context.Context, *ListNodesRequest) (*ListNodesResponse, error)
 	mustEmbedUnimplementedApplicationServiceServer()
 }
 
@@ -91,6 +103,9 @@ func (UnimplementedApplicationServiceServer) GetPreferences(context.Context, *Ge
 }
 func (UnimplementedApplicationServiceServer) SetPreferences(context.Context, *SetPreferencesRequest) (*SetPreferencesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetPreferences not implemented")
+}
+func (UnimplementedApplicationServiceServer) ListNodes(context.Context, *ListNodesRequest) (*ListNodesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListNodes not implemented")
 }
 func (UnimplementedApplicationServiceServer) mustEmbedUnimplementedApplicationServiceServer() {}
 
@@ -159,6 +174,24 @@ func _ApplicationService_SetPreferences_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ApplicationService_ListNodes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListNodesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ApplicationServiceServer).ListNodes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ApplicationService_ListNodes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ApplicationServiceServer).ListNodes(ctx, req.(*ListNodesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ApplicationService_ServiceDesc is the grpc.ServiceDesc for ApplicationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -177,6 +210,10 @@ var ApplicationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetPreferences",
 			Handler:    _ApplicationService_SetPreferences_Handler,
+		},
+		{
+			MethodName: "ListNodes",
+			Handler:    _ApplicationService_ListNodes_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
