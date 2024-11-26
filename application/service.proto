@@ -29,12 +29,13 @@ message GrantRole {
 
 message Application {
     string name = 1;
-    string tag = 2;
-    string subtitle = 3;
-    string category = 4;
-    string description = 5;
-    string nodeID = 6;
-    repeated GrantRole roles = 7;
+    string app_type = 2;
+    string tag = 3;
+    string subtitle = 4;
+    string category = 5;
+    string description = 6;
+    string nodeID = 7;
+    repeated GrantRole roles = 8;
 }
 
 // Define an enum for view types
