@@ -16,6 +16,7 @@ service ApplicationService {
     rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
     rpc SetPreferences(SetPreferencesRequest) returns (SetPreferencesResponse);
     rpc ListNodes(ListNodesRequest) returns (ListNodesResponse);
+    rpc CreateApplication(Application) returns (Application);
     rpc ListApplications(ListApplicationsRequest) returns (ListApplicationsResponse);
 }
 

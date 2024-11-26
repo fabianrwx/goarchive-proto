@@ -20,11 +20,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ApplicationService_PingAppService_FullMethodName   = "/ApplicationService/PingAppService"
-	ApplicationService_GetPreferences_FullMethodName   = "/ApplicationService/GetPreferences"
-	ApplicationService_SetPreferences_FullMethodName   = "/ApplicationService/SetPreferences"
-	ApplicationService_ListNodes_FullMethodName        = "/ApplicationService/ListNodes"
-	ApplicationService_ListApplications_FullMethodName = "/ApplicationService/ListApplications"
+	ApplicationService_PingAppService_FullMethodName    = "/ApplicationService/PingAppService"
+	ApplicationService_GetPreferences_FullMethodName    = "/ApplicationService/GetPreferences"
+	ApplicationService_SetPreferences_FullMethodName    = "/ApplicationService/SetPreferences"
+	ApplicationService_ListNodes_FullMethodName         = "/ApplicationService/ListNodes"
+	ApplicationService_CreateApplication_FullMethodName = "/ApplicationService/CreateApplication"
+	ApplicationService_ListApplications_FullMethodName  = "/ApplicationService/ListApplications"
 )
 
 // ApplicationServiceClient is the client API for ApplicationService service.
@@ -35,6 +36,7 @@ type ApplicationServiceClient interface {
 	GetPreferences(ctx context.Context, in *GetPreferencesRequest, opts ...grpc.CallOption) (*GetPreferencesResponse, error)
 	SetPreferences(ctx context.Context, in *SetPreferencesRequest, opts ...grpc.CallOption) (*SetPreferencesResponse, error)
 	ListNodes(ctx context.Context, in *ListNodesRequest, opts ...grpc.CallOption) (*ListNodesResponse, error)
+	CreateApplication(ctx context.Context, in *Application, opts ...grpc.CallOption) (*Application, error)
 	ListApplications(ctx context.Context, in *ListApplicationsRequest, opts ...grpc.CallOption) (*ListApplicationsResponse, error)
 }
 
@@ -82,6 +84,15 @@ func (c *applicationServiceClient) ListNodes(ctx context.Context, in *ListNodesR
 	return out, nil
 }
 
+func (c *applicationServiceClient) CreateApplication(ctx context.Context, in *Application, opts ...grpc.CallOption) (*Application, error) {
+	out := new(Application)
+	err := c.cc.Invoke(ctx, ApplicationService_CreateApplication_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *applicationServiceClient) ListApplications(ctx context.Context, in *ListApplicationsRequest, opts ...grpc.CallOption) (*ListApplicationsResponse, error) {
 	out := new(ListApplicationsResponse)
 	err := c.cc.Invoke(ctx, ApplicationService_ListApplications_FullMethodName, in, out, opts...)
@@ -99,6 +110,7 @@ type ApplicationServiceServer interface {
 	GetPreferences(context.Context, *GetPreferencesRequest) (*GetPreferencesResponse, error)
 	SetPreferences(context.Context, *SetPreferencesRequest) (*SetPreferencesResponse, error)
 	ListNodes(context.Context, *ListNodesRequest) (*ListNodesResponse, error)
+	CreateApplication(context.Context, *Application) (*Application, error)
 	ListApplications(context.Context, *ListApplicationsRequest) (*ListApplicationsResponse, error)
 	mustEmbedUnimplementedApplicationServiceServer()
 }
@@ -118,6 +130,9 @@ func (UnimplementedApplicationServiceServer) SetPreferences(context.Context, *Se
 }
 func (UnimplementedApplicationServiceServer) ListNodes(context.Context, *ListNodesRequest) (*ListNodesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListNodes not implemented")
+}
+func (UnimplementedApplicationServiceServer) CreateApplication(context.Context, *Application) (*Application, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateApplication not implemented")
 }
 func (UnimplementedApplicationServiceServer) ListApplications(context.Context, *ListApplicationsRequest) (*ListApplicationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListApplications not implemented")
@@ -207,6 +222,24 @@ func _ApplicationService_ListNodes_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ApplicationService_CreateApplication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Application)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ApplicationServiceServer).CreateApplication(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ApplicationService_CreateApplication_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ApplicationServiceServer).CreateApplication(ctx, req.(*Application))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ApplicationService_ListApplications_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListApplicationsRequest)
 	if err := dec(in); err != nil {
@@ -247,6 +280,10 @@ var ApplicationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListNodes",
 			Handler:    _ApplicationService_ListNodes_Handler,
+		},
+		{
+			MethodName: "CreateApplication",
+			Handler:    _ApplicationService_CreateApplication_Handler,
 		},
 		{
 			MethodName: "ListApplications",
