@@ -16,7 +16,7 @@ service ApplicationService {
     rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
     rpc SetPreferences(SetPreferencesRequest) returns (SetPreferencesResponse);
     rpc ListNodes(ListNodesRequest) returns (ListNodesResponse);
-    rpc CreateApplication(Application) returns (Application);
+    rpc CreateApplication(CreateApplicationRequest) returns (CreateApplicationResponse);
     rpc ListApplications(ListApplicationsRequest) returns (ListApplicationsResponse);
 }
 
@@ -33,7 +33,7 @@ message Application {
     string subtitle = 3;
     string category = 4;
     string description = 5;
-    string node = 6;
+    string nodeID = 6;
     repeated GrantRole roles = 7;
 }
 
@@ -99,4 +99,12 @@ message ListApplicationsRequest {
 
 message ListApplicationsResponse {
     repeated Application applications = 1;
+}
+
+message CreateApplicationRequest {
+    Application application = 1;
+}
+
+message CreateApplicationResponse {
+    Application application = 1;
 }
