@@ -16,6 +16,24 @@ service ApplicationService {
     rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
     rpc SetPreferences(SetPreferencesRequest) returns (SetPreferencesResponse);
     rpc ListNodes(ListNodesRequest) returns (ListNodesResponse);
+    rpc ListApplications(ListApplicationsRequest) returns (ListApplicationsResponse);
+}
+
+message GrantRole {
+    string id = 1;
+    string application_id = 2;
+    string role = 3;
+    bool enabled = 4;
+}
+
+message Application {
+    string name = 1;
+    string tag = 2;
+    string subtitle = 3;
+    string category = 4;
+    string description = 5;
+    string node = 6;
+    repeated GrantRole roles = 7;
 }
 
 // Define an enum for view types
@@ -71,4 +89,13 @@ message ListNodesRequest {
 
 message ListNodesResponse {
     repeated Node nodes = 1;
-}  
+} 
+
+message ListApplicationsRequest {
+    int32 limit = 1;
+    int32 offset = 2;
+}
+
+message ListApplicationsResponse {
+    repeated Application applications = 1;
+}
