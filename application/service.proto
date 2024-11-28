@@ -18,6 +18,7 @@ service ApplicationService {
     rpc ListNodes(ListNodesRequest) returns (ListNodesResponse);
     rpc CreateApplication(CreateApplicationRequest) returns (CreateApplicationResponse);
     rpc ListApplications(ListApplicationsRequest) returns (ListApplicationsResponse);
+    rpc DeleteApplication(DeleteApplicationRequest) returns (DeleteApplicationResponse);
 }
 
 message GrantRole {
@@ -109,4 +110,14 @@ message CreateApplicationRequest {
 
 message CreateApplicationResponse {
     Application application = 1;
+}
+
+message DeleteApplicationRequest {
+    string id = 1;
+    string deletekey = 2;
+    string confirm_deletekey = 3;
+}
+
+message DeleteApplicationResponse {
+    bool deleted = 1;
 }
