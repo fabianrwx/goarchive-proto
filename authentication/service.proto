@@ -103,6 +103,7 @@ message GetClaimsResponse {
   string user_guid = 1;
   string username = 2;
   repeated string roles = 3;
+  repeated UserGroup groups = 4;
 }
 
 message Group {
