@@ -46,6 +46,7 @@ message LoginResponse {
   string token_expiry = 4;
   string refresh_expiry = 5;
   repeated string roles = 6;
+  repeated UserGroup groups = 7;
 }
 
 // Logout Request
@@ -115,6 +116,13 @@ message Group {
   bool retention = 8;
   bool is_inmemory = 9;
   bool is_active = 10;
+}
+
+message UserGroup {
+  string id = 1;
+  string name = 2;
+  string role = 3;
+  string group_id = 4;
 }
 
 message ListGroupsResponse {
