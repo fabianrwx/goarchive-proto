@@ -123,10 +123,7 @@ message Group {
 }
 
 message UserGroup {
-  string id = 1;
-  string name = 2;
-  string role = 3;
-  string group_id = 4;
+  string guid = 1;
 }
 
 message ListGroupsResponse {
