@@ -27,6 +27,7 @@ const (
 	AuthenticationService_RefreshToken_FullMethodName       = "/AuthenticationService/RefreshToken"
 	AuthenticationService_ListGroups_FullMethodName         = "/AuthenticationService/ListGroups"
 	AuthenticationService_UpdateGroup_FullMethodName        = "/AuthenticationService/UpdateGroup"
+	AuthenticationService_GetGroupGuid_FullMethodName       = "/AuthenticationService/GetGroupGuid"
 )
 
 // AuthenticationServiceClient is the client API for AuthenticationService service.
@@ -46,6 +47,8 @@ type AuthenticationServiceClient interface {
 	ListGroups(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListGroupsResponse, error)
 	// Update group
 	UpdateGroup(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*UpdateGroupResponse, error)
+	// GetGroupGuid
+	GetGroupGuid(ctx context.Context, in *GetGroupGuidRequest, opts ...grpc.CallOption) (*GetGroupGuidResponse, error)
 }
 
 type authenticationServiceClient struct {
@@ -119,6 +122,15 @@ func (c *authenticationServiceClient) UpdateGroup(ctx context.Context, in *Updat
 	return out, nil
 }
 
+func (c *authenticationServiceClient) GetGroupGuid(ctx context.Context, in *GetGroupGuidRequest, opts ...grpc.CallOption) (*GetGroupGuidResponse, error) {
+	out := new(GetGroupGuidResponse)
+	err := c.cc.Invoke(ctx, AuthenticationService_GetGroupGuid_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthenticationServiceServer is the server API for AuthenticationService service.
 // All implementations must embed UnimplementedAuthenticationServiceServer
 // for forward compatibility
@@ -136,6 +148,8 @@ type AuthenticationServiceServer interface {
 	ListGroups(context.Context, *emptypb.Empty) (*ListGroupsResponse, error)
 	// Update group
 	UpdateGroup(context.Context, *UpdateGroupRequest) (*UpdateGroupResponse, error)
+	// GetGroupGuid
+	GetGroupGuid(context.Context, *GetGroupGuidRequest) (*GetGroupGuidResponse, error)
 	mustEmbedUnimplementedAuthenticationServiceServer()
 }
 
@@ -163,6 +177,9 @@ func (UnimplementedAuthenticationServiceServer) ListGroups(context.Context, *emp
 }
 func (UnimplementedAuthenticationServiceServer) UpdateGroup(context.Context, *UpdateGroupRequest) (*UpdateGroupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateGroup not implemented")
+}
+func (UnimplementedAuthenticationServiceServer) GetGroupGuid(context.Context, *GetGroupGuidRequest) (*GetGroupGuidResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroupGuid not implemented")
 }
 func (UnimplementedAuthenticationServiceServer) mustEmbedUnimplementedAuthenticationServiceServer() {}
 
@@ -303,6 +320,24 @@ func _AuthenticationService_UpdateGroup_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthenticationService_GetGroupGuid_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGroupGuidRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthenticationServiceServer).GetGroupGuid(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthenticationService_GetGroupGuid_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthenticationServiceServer).GetGroupGuid(ctx, req.(*GetGroupGuidRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthenticationService_ServiceDesc is the grpc.ServiceDesc for AuthenticationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -337,6 +372,10 @@ var AuthenticationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateGroup",
 			Handler:    _AuthenticationService_UpdateGroup_Handler,
+		},
+		{
+			MethodName: "GetGroupGuid",
+			Handler:    _AuthenticationService_GetGroupGuid_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

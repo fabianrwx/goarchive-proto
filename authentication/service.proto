@@ -29,6 +29,9 @@ service AuthenticationService {
     // Update group
     rpc UpdateGroup(UpdateGroupRequest) returns (UpdateGroupResponse) {}
 
+    // GetGroupGuid
+    rpc GetGroupGuid(GetGroupGuidRequest) returns (GetGroupGuidResponse) {}
+
 }
 
 // Login Request
@@ -139,4 +142,12 @@ message UpdateGroupRequest {
 
 message UpdateGroupResponse {
   bool success = 1;
+}
+
+message GetGroupGuidRequest {
+  string name = 1;
+}
+
+message GetGroupGuidResponse {
+  string guid = 1;
 }
