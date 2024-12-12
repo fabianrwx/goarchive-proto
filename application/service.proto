@@ -6,13 +6,19 @@ import "google/protobuf/empty.proto";
 // timestamp proto
 import "google/protobuf/timestamp.proto";
 
+import "google/api/annotations.proto";
+
 message PingAppResponse {
     string message = 1;
 }
 
 // Application service definition
 service ApplicationService {
-    rpc PingAppService(google.protobuf.Empty) returns (PingAppResponse);
+    rpc PingAppService(google.protobuf.Empty) returns (PingAppResponse) {
+        option (google.api.http) = {
+            get: "/ping"
+        };
+    };
     rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
     rpc SetPreferences(SetPreferencesRequest) returns (SetPreferencesResponse);
     rpc ListNodes(ListNodesRequest) returns (ListNodesResponse);

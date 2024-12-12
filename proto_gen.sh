@@ -22,6 +22,8 @@ for dir in $PROTO_DIRS; do
     # Generate protobuf and gRPC files for Golang
     protoc --go_out="golang" --go_opt=paths=source_relative \
            --go-grpc_out="golang" --go-grpc_opt=paths=source_relative \
+           --grpc-gateway_out="golang" --grpc-gateway_opt=paths=source_relative \
+           --openapiv2_out="docs/swagger" --openapiv2_opt=allow_merge=true,merge_file_name=service \
            "${dir_clean}"/*.proto
 
     # Run go mod tidy in the output directory
